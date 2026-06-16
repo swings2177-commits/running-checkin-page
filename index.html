@@ -100,6 +100,14 @@
       box-shadow: 0 0 0 4px rgba(46, 155, 255, .12);
     }
 
+    .card-error {
+      min-height: 18px;
+      margin: 8px 0 -2px;
+      color: #d34a3a;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
     .gate-options {
       display: grid;
       gap: 14px;
@@ -900,6 +908,8 @@
       <h1>输入名字</h1>
       <p>进入后会显示成跑步详情页，下面的内容可以正常向下滑动。</p>
       <input class="name-field" id="nameInput" type="text" autocomplete="name" placeholder="例如：AA" maxlength="12" required>
+      <input class="name-field" id="cardInput" type="text" autocomplete="off" placeholder="请输入卡密" maxlength="24" required>
+      <div class="card-error" id="cardError"></div>
       <div class="gate-options">
         <div class="gate-option">
           <span>是否是大一新生</span>
@@ -1111,6 +1121,8 @@
     const gate = document.querySelector("#gate");
     const form = document.querySelector("#nameForm");
     const input = document.querySelector("#nameInput");
+    const cardInput = document.querySelector("#cardInput");
+    const cardError = document.querySelector("#cardError");
     const displayName = document.querySelector("#displayName");
     const requirementText = document.querySelector("#requirementText");
     const programText = document.querySelector("#programText");
@@ -1142,6 +1154,15 @@
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const name = input.value.trim() || "AA";
+      const card = cardInput.value.trim();
+
+      if (card !== "217217abc") {
+        cardError.textContent = "卡密错误";
+        cardInput.focus();
+        return;
+      }
+
+      cardError.textContent = "";
       const freshman = new FormData(form).get("freshman") || "yes";
       const gender = new FormData(form).get("gender") || "female";
       enter(name, freshman, gender);
