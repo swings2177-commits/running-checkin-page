@@ -1,0 +1,17 @@
+{
+  "name": "跑步详情",
+  "short_name": "跑步详情",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e4f4ff",
+  "icons": [
+    {
+      "src": "assets/avatar.png",
+      "sizes": "220x220",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
