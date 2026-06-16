@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>跑步详情</title>
+  <style>
+    :root {
+      --blue-bg: #dff0ff;
+      --blue: #2e9bff;
+      --blue-deep: #1775cf;
+      --ink: #1f252b;
+      --muted: #8d99a6;
+      --soft: #f5f9ff;
+      --card: #ffffff;
+      --line: #edf2f7;
+      --shadow: 0 10px 28px rgba(69, 104, 136, .1);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #f7fbff;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 74% 12%, rgba(46, 155, 255, .2), transparent 30%),
+        linear-gradient(180deg, #e2f2ff 0%, #f9fcff 58%, #ffffff 100%);
+    }
+
+    .gate.hidden {
+      display: none;
+    }
+
+    .gate-card {
+      width: min(100%, 360px);
+      padding: 28px 24px 24px;
+      border: 1px solid rgba(142, 180, 214, .24);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 20px 60px rgba(62, 108, 151, .16);
+    }
+
+    .gate-card h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    .gate-card p {
+      margin: 10px 0 22px;
+      color: #657484;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .name-field {
+      width: 100%;
+      height: 52px;
+      padding: 0 15px;
+      border: 1px solid #d8e5ef;
+      border-radius: 8px;
+      outline: 0;
+      background: #f8fbff;
+      font-size: 17px;
+    }
+
+    .name-field:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(46, 155, 255, .12);
+    }
+
+    .enter-btn {
+      width: 100%;
+      height: 52px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #198dff;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .app {
+      width: min(100%, 430px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding-bottom: 108px;
+      background: #fff;
+      box-shadow: 0 0 0 1px rgba(30, 80, 120, .04);
+    }
+
+    .hero {
+      position: relative;
+      height: min(134px, 31vw);
+      min-height: 122px;
+      overflow: hidden;
+      background: url("assets/hero-bg.jpg?v=2") top center / 100% auto no-repeat;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: max(16px, env(safe-area-inset-top)) 18px 0;
+      font-size: 20px;
+      font-weight: 760;
+      line-height: 1;
+    }
+
+    .signal {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #10161d;
+      font-size: 18px;
+      font-weight: 720;
+    }
+
+    .bars {
+      display: flex;
+      align-items: end;
+      gap: 3px;
+      height: 20px;
+    }
+
+    .bars i {
+      display: block;
+      width: 5px;
+      border-radius: 3px 3px 1px 1px;
+      background: #10161d;
+    }
+
+    .bars i:nth-child(1) { height: 7px; }
+    .bars i:nth-child(2) { height: 11px; }
+    .bars i:nth-child(3) { height: 15px; }
+    .bars i:nth-child(4) { height: 19px; }
+
+    .battery {
+      position: relative;
+      min-width: 32px;
+      height: 18px;
+      padding-left: 10px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #ffcc35 0 52%, #dce3ec 52%);
+      color: #15191f;
+      font-size: 13px;
+      line-height: 18px;
+      text-align: center;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: 5px;
+      width: 3px;
+      height: 8px;
+      border-radius: 0 3px 3px 0;
+      background: #cfd8e3;
+    }
+
+    .nav {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 18px 0;
+    }
+
+    .back-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 25px;
+      font-weight: 820;
+      line-height: 1;
+    }
+
+    .back {
+      width: 17px;
+      height: 17px;
+      border-left: 3px solid #1f2a33;
+      border-bottom: 3px solid #1f2a33;
+      transform: rotate(45deg);
+    }
+
+    .mini-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .56);
+      box-shadow: inset 0 0 0 1px rgba(130, 167, 197, .12);
+      color: #151c23;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .circle-dot {
+      width: 26px;
+      height: 26px;
+      border: 3px solid #1b252d;
+      border-radius: 50%;
+      background: radial-gradient(circle, #1b252d 0 4px, transparent 4px);
+    }
+
+    .sport-label {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 66px 0 0 20px;
+      color: #45515c;
+      font-size: 17px;
+    }
+
+    .sport-icon {
+      display: grid;
+      width: 22px;
+      height: 22px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .runner {
+      position: absolute;
+      right: 16px;
+      top: 60px;
+      width: 210px;
+      height: 158px;
+      pointer-events: none;
+    }
+
+    .speed-line {
+      position: absolute;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(92, 166, 225, .18);
+      filter: blur(1px);
+    }
+
+    .speed-line.a { top: 18px; left: 26px; width: 55px; }
+    .speed-line.b { top: 48px; right: 9px; width: 74px; }
+    .speed-line.c { bottom: 22px; left: 6px; width: 92px; }
+
+    .star {
+      position: absolute;
+      right: 63px;
+      top: 13px;
+      width: 34px;
+      height: 34px;
+      background: #ffab17;
+      clip-path: polygon(50% 0%, 61% 34%, 97% 35%, 68% 55%, 79% 90%, 50% 69%, 21% 90%, 32% 55%, 3% 35%, 39% 34%);
+      filter: drop-shadow(0 5px 8px rgba(224, 134, 0, .22));
+    }
+
+    .person {
+      position: absolute;
+      right: 44px;
+      top: 36px;
+      width: 86px;
+      height: 110px;
+    }
+
+    .head {
+      position: absolute;
+      left: 29px;
+      top: 0;
+      width: 30px;
+      height: 34px;
+      border-radius: 45% 45% 48% 48%;
+      background: #ffd0a5;
+      box-shadow: inset 0 7px 0 #2b2f36;
+    }
+
+    .neck {
+      position: absolute;
+      left: 41px;
+      top: 31px;
+      width: 9px;
+      height: 10px;
+      background: #f2b78c;
+    }
+
+    .body {
+      position: absolute;
+      left: 30px;
+      top: 39px;
+      width: 31px;
+      height: 47px;
+      border-radius: 14px 14px 8px 8px;
+      background: #f7fbff;
+      transform: rotate(-10deg);
+      box-shadow: inset -5px 0 0 #e4edf6;
+    }
+
+    .arm,
+    .leg {
+      position: absolute;
+      border-radius: 999px;
+      transform-origin: top center;
+    }
+
+    .arm.left {
+      left: 21px;
+      top: 48px;
+      width: 11px;
+      height: 45px;
+      background: #f0b98e;
+      transform: rotate(54deg);
+    }
+
+    .arm.right {
+      left: 57px;
+      top: 42px;
+      width: 11px;
+      height: 43px;
+      background: #efb68b;
+      transform: rotate(-38deg);
+    }
+
+    .shorts {
+      position: absolute;
+      left: 31px;
+      top: 80px;
+      width: 44px;
+      height: 27px;
+      border-radius: 10px 10px 8px 8px;
+      background: #4f5961;
+      transform: rotate(10deg);
+    }
+
+    .leg.left {
+      left: 30px;
+      top: 98px;
+      width: 13px;
+      height: 52px;
+      background: #efb58b;
+      transform: rotate(52deg);
+    }
+
+    .leg.right {
+      left: 64px;
+      top: 98px;
+      width: 13px;
+      height: 55px;
+      background: #efb58b;
+      transform: rotate(-9deg);
+    }
+
+    .watch {
+      position: absolute;
+      right: 20px;
+      top: 73px;
+      width: 8px;
+      height: 16px;
+      border-radius: 4px;
+      background: #172b3b;
+      transform: rotate(-31deg);
+    }
+
+    .sheet {
+      position: relative;
+      z-index: 3;
+      margin-top: -6px;
+      padding: 0 18px 8px;
+      border-radius: 22px 22px 0 0;
+      background: #fff;
+    }
+
+    .profile-row {
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      min-height: 82px;
+    }
+
+    .avatar {
+      position: relative;
+      width: 62px;
+      height: 62px;
+      overflow: hidden;
+      border-radius: 50%;
+      background: #ccecff;
+    }
+
+    .avatar img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .name {
+      margin: 0;
+      overflow: hidden;
+      color: #11161c;
+      font-size: 23px;
+      font-weight: 650;
+      line-height: 1.2;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .plan-link,
+    .detail-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #9ba4ad;
+      font-size: 16px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .chev {
+      width: 12px;
+      height: 12px;
+      border-right: 3px solid currentColor;
+      border-bottom: 3px solid currentColor;
+      transform: rotate(-45deg);
+    }
+
+    .grade-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 38px;
+    }
+
+    .grade {
+      color: #20262d;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .badge {
+      padding: 5px 12px;
+      border: 1px solid #dcecfb;
+      border-radius: 999px;
+      background: #f3f8ff;
+      color: #4f91c3;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.15;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+      padding: 4px 0 14px;
+    }
+
+    .times {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      min-width: 0;
+      margin-bottom: 9px;
+    }
+
+    .times strong {
+      color: #11161c;
+      font-size: 39px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+
+    .times span {
+      color: #9a9fa6;
+      font-size: 16px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .program {
+      color: #666c73;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.32;
+    }
+
+    .section-title {
+      margin: 16px 0 12px;
+      color: #13191f;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      min-width: 0;
+      padding: 13px 11px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .98);
+      box-shadow: 0 6px 18px rgba(40, 76, 112, .04);
+    }
+
+    .stat span {
+      display: block;
+      overflow: hidden;
+      color: #333c45;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.15;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 11px;
+      color: #1b2229;
+      font-size: 25px;
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .stat small {
+      font-size: 17px;
+    }
+
+    .records {
+      display: grid;
+      gap: 20px;
+    }
+
+    .record {
+      position: relative;
+      min-height: 112px;
+      overflow: hidden;
+      padding: 18px 18px;
+      border: 1px solid #e9f1fb;
+      border-radius: 8px;
+      background:
+        linear-gradient(112deg, rgba(246, 251, 255, .94), rgba(245, 250, 255, .72)),
+        radial-gradient(circle at 76% 58%, rgba(166, 210, 255, .24), transparent 30%),
+        radial-gradient(circle at 92% 20%, rgba(151, 189, 242, .18), transparent 24%);
+      box-shadow: 0 8px 24px rgba(69, 104, 136, .08);
+    }
+
+    .record-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .distance {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #2a333d;
+      font-size: 23px;
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .record-badge {
+      padding: 5px 12px;
+      border: 1px solid #d8e8f8;
+      border-radius: 999px;
+      background: #eaf5ff;
+      color: #3b88c7;
+      font-size: 15px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .record-meta {
+      margin-top: 12px;
+      color: #8da0ac;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.32;
+      white-space: nowrap;
+    }
+
+    .record-date {
+      margin-top: 9px;
+      color: #8da0ac;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .bottom-action {
+      position: fixed;
+      left: 50%;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 4;
+      width: min(calc(100% - 28px), 402px);
+      height: 66px;
+      transform: translateX(-50%);
+      border: 0;
+      border-radius: 999px;
+      background: #cfcfcf;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 420;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 100px;
+      z-index: 20;
+      width: max-content;
+      max-width: calc(100% - 44px);
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(25, 31, 38, .82);
+      color: #fff;
+      font-size: 14px;
+      opacity: 0;
+      transform: translate(-50%, 8px);
+      transition: opacity .18s ease, transform .18s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (max-width: 374px) {
+      .back-title {
+        font-size: 23px;
+      }
+
+      .runner {
+        right: -8px;
+        transform: scale(.9);
+      }
+
+      .sport-label {
+        margin-top: 80px;
+      }
+
+      .name {
+        font-size: 22px;
+      }
+
+      .plan-link,
+      .detail-link {
+        font-size: 15px;
+      }
+
+      .times strong {
+        font-size: 36px;
+      }
+
+      .program {
+        font-size: 19px;
+      }
+
+      .stat-grid {
+        gap: 8px;
+      }
+
+      .stat {
+        padding-inline: 8px;
+      }
+
+      .stat span {
+        font-size: 14px;
+      }
+
+      .stat strong {
+        font-size: 23px;
+      }
+
+      .record-meta,
+      .record-date {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="gate" id="gate">
+    <form class="gate-card" id="nameForm">
+      <h1>输入名字</h1>
+      <p>进入后会显示成跑步详情页，下面的内容可以正常向下滑动。</p>
+      <input class="name-field" id="nameInput" type="text" autocomplete="name" placeholder="例如：李奕凝" maxlength="12" required>
+      <button class="enter-btn" type="submit">进入页面</button>
+    </form>
+  </div>
+
+  <main class="app" aria-label="跑步详情页面">
+    <section class="hero" aria-label="跑步详情顶部背景"></section>
+
+    <section class="sheet">
+      <div class="profile-row">
+        <div class="avatar" aria-hidden="true"><img src="assets/avatar.png" alt=""></div>
+        <h2 class="name" id="displayName">李奕凝</h2>
+        <div class="plan-link">跑步计划 <span class="chev"></span></div>
+      </div>
+
+      <div class="grade-line">
+        <div class="grade">2025级</div>
+        <div class="badge">今日已打卡</div>
+      </div>
+
+      <div class="summary">
+        <div>
+          <div class="times"><strong>44次</strong><span>单次不少于1.5公里</span></div>
+          <div class="program">校园阳光健康跑（大一新生）</div>
+        </div>
+        <div class="detail-link">计划详情 <span class="chev"></span></div>
+      </div>
+
+      <h3 class="section-title">跑步统计</h3>
+      <div class="stat-grid">
+        <div class="stat"><span>打卡总次数</span><strong>44<small>次</small></strong></div>
+        <div class="stat"><span>已跑总公里数</span><strong>66.00<small>km</small></strong></div>
+        <div class="stat"><span>已跑总时长</span><strong>05:55:11</strong></div>
+      </div>
+
+      <div class="records">
+        <article class="record">
+          <div class="record-head">
+            <div class="distance">1.50公里 <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:46 | 4'30''min/km | 163步/分</div>
+          <div class="record-date">2026-06-15 21:45:43</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance">1.50公里 <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:55 | 4'37''min/km | 165步/分</div>
+          <div class="record-date">2026-06-14 21:01:14</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance">1.51公里 <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:07:02 | 4'39''min/km | 162步/分</div>
+          <div class="record-date">2026-06-13 20:58:29</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance">1.50公里 <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:48 | 4'32''min/km | 164步/分</div>
+          <div class="record-date">2026-06-12 21:08:51</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance">1.52公里 <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:07:09 | 4'42''min/km | 160步/分</div>
+          <div class="record-date">2026-06-11 20:49:36</div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <button class="bottom-action" type="button" id="fakeButton">打卡</button>
+  <div class="toast" id="toast">这是展示页，暂不进入其它页面</div>
+
+  <script>
+    const gate = document.querySelector("#gate");
+    const form = document.querySelector("#nameForm");
+    const input = document.querySelector("#nameInput");
+    const displayName = document.querySelector("#displayName");
+    const toast = document.querySelector("#toast");
+
+    function enter(name) {
+      displayName.textContent = name.trim() || "李奕凝";
+      gate.classList.add("hidden");
+    }
+
+    input.focus();
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const name = input.value.trim() || "李奕凝";
+      enter(name);
+    });
+
+    document.querySelectorAll(".plan-link, .detail-link, .record, .bottom-action, .mini-actions, .back-title").forEach((item) => {
+      item.addEventListener("click", () => {
+        toast.classList.add("show");
+        clearTimeout(window.toastTimer);
+        window.toastTimer = setTimeout(() => toast.classList.remove("show"), 1300);
+      });
+    });
+  </script>
+</body>
+</html>
