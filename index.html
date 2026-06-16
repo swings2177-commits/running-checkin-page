@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e4f4ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>跑步详情</title>
   <style>
     :root {
@@ -117,10 +120,10 @@
 
     .hero {
       position: relative;
-      height: min(134px, 31vw);
-      min-height: 122px;
+      height: min(158px, 36.8vw);
+      min-height: 146px;
       overflow: hidden;
-      background: url("assets/hero-bg.jpg?v=2") top center / 100% auto no-repeat;
+      background: #e8f6ff url("assets/hero-bg.jpg?v=3") top center / 100% auto no-repeat;
     }
 
     .status {
@@ -395,7 +398,7 @@
     .sheet {
       position: relative;
       z-index: 3;
-      margin-top: -6px;
+      margin-top: -16px;
       padding: 0 18px 8px;
       border-radius: 22px 22px 0 0;
       background: #fff;
@@ -406,7 +409,7 @@
       grid-template-columns: 70px minmax(0, 1fr) auto;
       align-items: center;
       gap: 12px;
-      min-height: 82px;
+      min-height: 74px;
     }
 
     .avatar {
@@ -429,8 +432,8 @@
       margin: 0;
       overflow: hidden;
       color: #11161c;
-      font-size: 23px;
-      font-weight: 650;
+      font-size: 21px;
+      font-weight: 620;
       line-height: 1.2;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -442,7 +445,7 @@
       align-items: center;
       gap: 6px;
       color: #9ba4ad;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 400;
       white-space: nowrap;
     }
@@ -460,23 +463,23 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      min-height: 38px;
+      min-height: 34px;
     }
 
     .grade {
       color: #20262d;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 400;
       line-height: 1;
     }
 
     .badge {
-      padding: 5px 12px;
+      padding: 5px 11px;
       border: 1px solid #dcecfb;
       border-radius: 999px;
       background: #f3f8ff;
       color: #4f91c3;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 1.15;
     }
@@ -486,7 +489,7 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
       align-items: start;
-      padding: 4px 0 14px;
+      padding: 2px 0 12px;
     }
 
     .times {
@@ -494,12 +497,12 @@
       align-items: baseline;
       gap: 12px;
       min-width: 0;
-      margin-bottom: 9px;
+      margin-bottom: 8px;
     }
 
     .times strong {
       color: #11161c;
-      font-size: 39px;
+      font-size: 34px;
       font-weight: 400;
       letter-spacing: 0;
       line-height: 1;
@@ -507,22 +510,22 @@
 
     .times span {
       color: #9a9fa6;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 400;
       white-space: nowrap;
     }
 
     .program {
       color: #666c73;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 400;
       line-height: 1.32;
     }
 
     .section-title {
-      margin: 16px 0 12px;
+      margin: 14px 0 12px;
       color: #13191f;
-      font-size: 23px;
+      font-size: 21px;
       font-weight: 700;
       line-height: 1.1;
     }
@@ -531,12 +534,12 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .stat {
       min-width: 0;
-      padding: 13px 11px;
+      padding: 12px 10px;
       border-radius: 8px;
       background: rgba(255, 255, 255, .98);
       box-shadow: 0 6px 18px rgba(40, 76, 112, .04);
@@ -546,7 +549,7 @@
       display: block;
       overflow: hidden;
       color: #333c45;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 1.15;
       white-space: nowrap;
@@ -555,28 +558,28 @@
 
     .stat strong {
       display: block;
-      margin-top: 11px;
+      margin-top: 10px;
       color: #1b2229;
-      font-size: 25px;
+      font-size: 22px;
       font-weight: 400;
       line-height: 1;
       white-space: nowrap;
     }
 
     .stat small {
-      font-size: 17px;
+      font-size: 15px;
     }
 
     .records {
       display: grid;
-      gap: 20px;
+      gap: 18px;
     }
 
     .record {
       position: relative;
-      min-height: 112px;
+      min-height: 102px;
       overflow: hidden;
-      padding: 18px 18px;
+      padding: 16px 18px;
       border: 1px solid #e9f1fb;
       border-radius: 8px;
       background:
@@ -598,7 +601,7 @@
       align-items: center;
       gap: 12px;
       color: #2a333d;
-      font-size: 23px;
+      font-size: 21px;
       font-weight: 400;
       line-height: 1;
       white-space: nowrap;
@@ -610,24 +613,24 @@
       border-radius: 999px;
       background: #eaf5ff;
       color: #3b88c7;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 400;
       white-space: nowrap;
     }
 
     .record-meta {
-      margin-top: 12px;
+      margin-top: 11px;
       color: #8da0ac;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 400;
       line-height: 1.32;
       white-space: nowrap;
     }
 
     .record-date {
-      margin-top: 9px;
+      margin-top: 8px;
       color: #8da0ac;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 400;
       line-height: 1.2;
     }
@@ -638,13 +641,13 @@
       bottom: max(18px, env(safe-area-inset-bottom));
       z-index: 4;
       width: min(calc(100% - 28px), 402px);
-      height: 66px;
+      height: 62px;
       transform: translateX(-50%);
       border: 0;
       border-radius: 999px;
       background: #cfcfcf;
       color: #fff;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 420;
       box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
     }
