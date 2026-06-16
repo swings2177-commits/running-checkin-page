@@ -100,6 +100,52 @@
       box-shadow: 0 0 0 4px rgba(46, 155, 255, .12);
     }
 
+    .gate-options {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .gate-option {
+      display: grid;
+      gap: 8px;
+    }
+
+    .gate-option span {
+      color: #465563;
+      font-size: 14px;
+    }
+
+    .choice-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .choice-row input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice-row label {
+      display: grid;
+      height: 42px;
+      place-items: center;
+      border: 1px solid #d8e5ef;
+      border-radius: 8px;
+      background: #f8fbff;
+      color: #5f7080;
+      font-size: 15px;
+    }
+
+    .choice-row input:checked + label {
+      border-color: #198dff;
+      background: #eef7ff;
+      color: #1775cf;
+      font-weight: 650;
+    }
+
     .enter-btn {
       width: 100%;
       height: 52px;
@@ -127,6 +173,98 @@
       min-height: 146px;
       overflow: hidden;
       background: #e8f6ff url("assets/hero-bg.jpg?v=3") top center / 100% auto no-repeat;
+    }
+
+    .fixed-titlebar {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      z-index: 9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(100%, 430px);
+      height: 74px;
+      padding: 18px 18px 0;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(228, 244, 255, .98) 0%, rgba(228, 244, 255, .92) 74%, rgba(228, 244, 255, 0) 100%);
+      pointer-events: none;
+    }
+
+    .fixed-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #111820;
+      font-size: 22px;
+      font-weight: 780;
+      line-height: 1;
+      text-shadow: 0 .4px 0 rgba(255, 255, 255, .55);
+    }
+
+    .fixed-back {
+      width: 17px;
+      height: 17px;
+      border-left: 2.8px solid #1d2932;
+      border-bottom: 2.8px solid #1d2932;
+      transform: rotate(45deg);
+    }
+
+    .fixed-menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 74px;
+      height: 36px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .48);
+      box-shadow:
+        inset 0 0 0 1px rgba(112, 152, 188, .12),
+        0 6px 16px rgba(116, 163, 202, .16);
+      color: #18242c;
+      backdrop-filter: blur(10px);
+    }
+
+    .fixed-actions {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .fixed-star {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      filter: drop-shadow(0 4px 6px rgba(224, 134, 0, .2));
+    }
+
+    .fixed-star::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      background: #ffab17;
+      clip-path: polygon(50% 0%, 61% 34%, 97% 35%, 68% 55%, 79% 90%, 50% 69%, 21% 90%, 32% 55%, 3% 35%, 39% 34%);
+    }
+
+    .fixed-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .fixed-dots i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .fixed-circle {
+      width: 25px;
+      height: 25px;
+      border: 3px solid currentColor;
+      border-radius: 50%;
+      background: radial-gradient(circle, currentColor 0 4px, transparent 4.5px);
     }
 
     .status {
@@ -754,11 +892,42 @@
       <h1>输入名字</h1>
       <p>进入后会显示成跑步详情页，下面的内容可以正常向下滑动。</p>
       <input class="name-field" id="nameInput" type="text" autocomplete="name" placeholder="例如：AA" maxlength="12" required>
+      <div class="gate-options">
+        <div class="gate-option">
+          <span>是否是大一新生</span>
+          <div class="choice-row">
+            <input id="freshmanYes" name="freshman" type="radio" value="yes" checked>
+            <label for="freshmanYes">是</label>
+            <input id="freshmanNo" name="freshman" type="radio" value="no">
+            <label for="freshmanNo">否</label>
+          </div>
+        </div>
+        <div class="gate-option">
+          <span>性别</span>
+          <div class="choice-row">
+            <input id="genderFemale" name="gender" type="radio" value="female" checked>
+            <label for="genderFemale">女</label>
+            <input id="genderMale" name="gender" type="radio" value="male">
+            <label for="genderMale">男</label>
+          </div>
+        </div>
+      </div>
       <button class="enter-btn" type="submit">进入页面</button>
     </form>
   </div>
 
   <main class="app" aria-label="跑步详情页面">
+    <header class="fixed-titlebar" aria-label="固定标题栏">
+      <div class="fixed-title"><span class="fixed-back"></span><span>跑步详情</span></div>
+      <div class="fixed-actions" aria-hidden="true">
+        <span class="fixed-star"></span>
+        <div class="fixed-menu">
+          <span class="fixed-dots"><i></i><i></i><i></i></span>
+          <span class="fixed-circle"></span>
+        </div>
+      </div>
+    </header>
+
     <section class="hero" aria-label="跑步详情顶部背景"></section>
 
     <section class="sheet">
@@ -775,8 +944,8 @@
 
       <div class="summary">
         <div>
-          <div class="times"><strong>44次</strong><span>单次不少于1.5公里</span></div>
-          <div class="program">校园阳光健康跑（大一新生）</div>
+          <div class="times"><strong>44次</strong><span id="requirementText">单次不少于1.5公里</span></div>
+          <div class="program" id="programText">校园阳光健康跑（大一新生）</div>
         </div>
         <div class="detail-link">计划详情 <span class="chev"></span></div>
       </div>
@@ -784,14 +953,14 @@
       <h3 class="section-title">跑步统计</h3>
       <div class="stat-grid">
         <div class="stat"><span>打卡总次数</span><strong>44<small>次</small></strong></div>
-        <div class="stat"><span>已跑总公里数</span><strong>66.00<small>km</small></strong></div>
+        <div class="stat"><span>已跑总公里数</span><strong><span id="totalKm">66.00</span><small>km</small></strong></div>
         <div class="stat"><span>已跑总时长</span><strong>05:55:11</strong></div>
       </div>
 
       <div class="records">
         <article class="record">
           <div class="record-head">
-            <div class="distance">1.50公里 <span class="chev"></span></div>
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
             <div class="record-badge">打卡成功</div>
           </div>
           <div class="record-meta">00:06:46 | 4'30''min/km | 163步/分</div>
@@ -800,7 +969,7 @@
 
         <article class="record">
           <div class="record-head">
-            <div class="distance">1.50公里 <span class="chev"></span></div>
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
             <div class="record-badge">打卡成功</div>
           </div>
           <div class="record-meta">00:06:55 | 4'37''min/km | 165步/分</div>
@@ -809,7 +978,7 @@
 
         <article class="record">
           <div class="record-head">
-            <div class="distance">1.51公里 <span class="chev"></span></div>
+            <div class="distance"><span class="record-distance-text">1.51公里</span> <span class="chev"></span></div>
             <div class="record-badge">打卡成功</div>
           </div>
           <div class="record-meta">00:07:02 | 4'39''min/km | 162步/分</div>
@@ -818,7 +987,7 @@
 
         <article class="record">
           <div class="record-head">
-            <div class="distance">1.50公里 <span class="chev"></span></div>
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
             <div class="record-badge">打卡成功</div>
           </div>
           <div class="record-meta">00:06:48 | 4'32''min/km | 164步/分</div>
@@ -827,11 +996,101 @@
 
         <article class="record">
           <div class="record-head">
-            <div class="distance">1.52公里 <span class="chev"></span></div>
+            <div class="distance"><span class="record-distance-text">1.52公里</span> <span class="chev"></span></div>
             <div class="record-badge">打卡成功</div>
           </div>
           <div class="record-meta">00:07:09 | 4'42''min/km | 160步/分</div>
           <div class="record-date">2026-06-11 20:49:36</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:59 | 4'39''min/km | 164步/分</div>
+          <div class="record-date">2026-06-10 21:12:08</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.51公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:07:04 | 4'41''min/km | 161步/分</div>
+          <div class="record-date">2026-06-09 20:56:27</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:51 | 4'34''min/km | 166步/分</div>
+          <div class="record-date">2026-06-08 21:03:45</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.53公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:07:18 | 4'46''min/km | 158步/分</div>
+          <div class="record-date">2026-06-07 20:44:19</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:47 | 4'31''min/km | 163步/分</div>
+          <div class="record-date">2026-06-06 21:18:02</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.52公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:07:12 | 4'44''min/km | 159步/分</div>
+          <div class="record-date">2026-06-05 20:52:33</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:58 | 4'38''min/km | 162步/分</div>
+          <div class="record-date">2026-06-04 21:06:21</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.51公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:07:01 | 4'38''min/km | 164步/分</div>
+          <div class="record-date">2026-06-03 20:59:56</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.50公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:06:53 | 4'35''min/km | 165步/分</div>
+          <div class="record-date">2026-06-02 21:10:18</div>
+        </article>
+
+        <article class="record">
+          <div class="record-head">
+            <div class="distance"><span class="record-distance-text">1.52公里</span> <span class="chev"></span></div>
+            <div class="record-badge">打卡成功</div>
+          </div>
+          <div class="record-meta">00:07:16 | 4'47''min/km | 160步/分</div>
+          <div class="record-date">2026-06-01 20:48:40</div>
         </article>
       </div>
     </section>
@@ -845,10 +1104,28 @@
     const form = document.querySelector("#nameForm");
     const input = document.querySelector("#nameInput");
     const displayName = document.querySelector("#displayName");
+    const requirementText = document.querySelector("#requirementText");
+    const programText = document.querySelector("#programText");
+    const totalKm = document.querySelector("#totalKm");
+    const recordDistances = document.querySelectorAll(".record-distance-text");
     const toast = document.querySelector("#toast");
 
-    function enter(name) {
+    function enter(name, freshman, gender) {
+      const isMale = gender === "male";
+      const isFreshman = freshman === "yes";
+
       displayName.textContent = name.trim() || "AA";
+      requirementText.textContent = isMale ? "单次不少于2公里" : "单次不少于1.5公里";
+      programText.textContent = isFreshman ? "校园阳光健康跑（大一新生）" : "校园阳光健康跑";
+      totalKm.textContent = isMale ? "88.00" : "66.00";
+      const femaleDistances = [
+        "1.50公里", "1.50公里", "1.51公里", "1.50公里", "1.52公里",
+        "1.50公里", "1.51公里", "1.50公里", "1.53公里", "1.50公里",
+        "1.52公里", "1.50公里", "1.51公里", "1.50公里", "1.52公里"
+      ];
+      recordDistances.forEach((distance, index) => {
+        distance.textContent = isMale ? "2.00公里" : femaleDistances[index] || "1.50公里";
+      });
       gate.classList.add("hidden");
     }
 
@@ -857,7 +1134,9 @@
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const name = input.value.trim() || "AA";
-      enter(name);
+      const freshman = new FormData(form).get("freshman") || "yes";
+      const gender = new FormData(form).get("gender") || "female";
+      enter(name, freshman, gender);
     });
 
     document.querySelectorAll(".plan-link, .detail-link, .record, .bottom-action, .mini-actions, .back-title").forEach((item) => {
