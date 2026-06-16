@@ -409,11 +409,14 @@
       grid-template-columns: 70px minmax(0, 1fr) auto;
       align-items: center;
       gap: 12px;
-      min-height: 74px;
+      min-height: 78px;
+      padding: 0;
     }
 
     .avatar {
       position: relative;
+      z-index: 2;
+      top: 0;
       width: 62px;
       height: 62px;
       overflow: hidden;
@@ -450,6 +453,10 @@
       white-space: nowrap;
     }
 
+    .plan-link {
+      margin-top: 0;
+    }
+
     .chev {
       width: 12px;
       height: 12px;
@@ -463,23 +470,25 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      min-height: 34px;
+      min-height: 30px;
     }
 
     .grade {
       color: #20262d;
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 400;
       line-height: 1;
     }
 
     .badge {
-      padding: 5px 11px;
+      position: relative;
+      top: -5px;
+      padding: 4px 10px;
       border: 1px solid #dcecfb;
       border-radius: 999px;
       background: #f3f8ff;
       color: #4f91c3;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 400;
       line-height: 1.15;
     }
@@ -489,7 +498,7 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 10px;
       align-items: start;
-      padding: 2px 0 12px;
+      padding: 0 0 8px;
     }
 
     .times {
@@ -502,7 +511,7 @@
 
     .times strong {
       color: #11161c;
-      font-size: 34px;
+      font-size: 26px;
       font-weight: 400;
       letter-spacing: 0;
       line-height: 1;
@@ -517,13 +526,13 @@
 
     .program {
       color: #666c73;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 400;
       line-height: 1.32;
     }
 
     .section-title {
-      margin: 14px 0 12px;
+      margin: 11px 0 11px;
       color: #13191f;
       font-size: 21px;
       font-weight: 700;
@@ -533,23 +542,23 @@
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 9px;
+      margin-bottom: 13px;
     }
 
     .stat {
       min-width: 0;
-      padding: 12px 10px;
+      padding: 9px 10px 10px;
       border-radius: 8px;
-      background: rgba(255, 255, 255, .98);
-      box-shadow: 0 6px 18px rgba(40, 76, 112, .04);
+      background: rgba(248, 250, 252, .82);
+      box-shadow: 0 5px 14px rgba(40, 76, 112, .025);
     }
 
     .stat span {
       display: block;
       overflow: hidden;
-      color: #333c45;
-      font-size: 14px;
+      color: #3f4851;
+      font-size: 13px;
       font-weight: 400;
       line-height: 1.15;
       white-space: nowrap;
@@ -558,16 +567,17 @@
 
     .stat strong {
       display: block;
-      margin-top: 10px;
-      color: #1b2229;
-      font-size: 22px;
+      margin-top: 8px;
+      color: #252c33;
+      font-size: 19px;
       font-weight: 400;
       line-height: 1;
       white-space: nowrap;
+      transform-origin: left center;
     }
 
     .stat small {
-      font-size: 15px;
+      font-size: 13px;
     }
 
     .records {
@@ -599,12 +609,18 @@
     .distance {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       color: #2a333d;
-      font-size: 21px;
+      font-size: 17px;
       font-weight: 400;
       line-height: 1;
       white-space: nowrap;
+    }
+
+    .distance .chev {
+      width: 8px;
+      height: 8px;
+      border-width: 2px;
     }
 
     .record-badge {
@@ -699,11 +715,11 @@
       }
 
       .times strong {
-        font-size: 36px;
+        font-size: 25px;
       }
 
       .program {
-        font-size: 19px;
+        font-size: 16px;
       }
 
       .stat-grid {
@@ -719,7 +735,7 @@
       }
 
       .stat strong {
-        font-size: 23px;
+        font-size: 19px;
       }
 
       .record-meta,
@@ -734,7 +750,7 @@
     <form class="gate-card" id="nameForm">
       <h1>输入名字</h1>
       <p>进入后会显示成跑步详情页，下面的内容可以正常向下滑动。</p>
-      <input class="name-field" id="nameInput" type="text" autocomplete="name" placeholder="例如：李奕凝" maxlength="12" required>
+      <input class="name-field" id="nameInput" type="text" autocomplete="name" placeholder="例如：AA" maxlength="12" required>
       <button class="enter-btn" type="submit">进入页面</button>
     </form>
   </div>
@@ -745,7 +761,7 @@
     <section class="sheet">
       <div class="profile-row">
         <div class="avatar" aria-hidden="true"><img src="assets/avatar.png" alt=""></div>
-        <h2 class="name" id="displayName">李奕凝</h2>
+        <h2 class="name" id="displayName">AA</h2>
         <div class="plan-link">跑步计划 <span class="chev"></span></div>
       </div>
 
@@ -829,7 +845,7 @@
     const toast = document.querySelector("#toast");
 
     function enter(name) {
-      displayName.textContent = name.trim() || "李奕凝";
+      displayName.textContent = name.trim() || "AA";
       gate.classList.add("hidden");
     }
 
@@ -837,7 +853,7 @@
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const name = input.value.trim() || "李奕凝";
+      const name = input.value.trim() || "AA";
       enter(name);
     });
 
