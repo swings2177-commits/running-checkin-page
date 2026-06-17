@@ -729,6 +729,7 @@
 
     #totalKm {
       letter-spacing: -.2px;
+      font-size: 1.16em;
     }
 
     .stat small {
@@ -950,13 +951,13 @@
 
     <section class="sheet">
       <div class="profile-row">
-        <div class="avatar" aria-hidden="true"><img src="assets/avatar.png" alt=""></div>
+        <div class="avatar" aria-hidden="true"><img id="avatarImage" src="assets/avatar.png" alt=""></div>
         <h2 class="name" id="displayName">AA</h2>
         <div class="plan-link">跑步计划 <span class="chev"></span></div>
       </div>
 
       <div class="grade-line">
-        <div class="grade">2025级</div>
+        <div class="grade" id="gradeText">2025级</div>
         <div class="badge">今日已打卡</div>
       </div>
 
@@ -1124,6 +1125,8 @@
     const cardInput = document.querySelector("#cardInput");
     const cardError = document.querySelector("#cardError");
     const displayName = document.querySelector("#displayName");
+    const avatarImage = document.querySelector("#avatarImage");
+    const gradeText = document.querySelector("#gradeText");
     const requirementText = document.querySelector("#requirementText");
     const programText = document.querySelector("#programText");
     const totalKm = document.querySelector("#totalKm");
@@ -1135,6 +1138,8 @@
       const isFreshman = freshman === "yes";
 
       displayName.textContent = name.trim() || "AA";
+      avatarImage.src = isMale ? "assets/avatar-male.png" : "assets/avatar.png";
+      gradeText.textContent = isFreshman ? "2025级" : "2024级";
       requirementText.textContent = isMale ? "单次不少于2公里" : "单次不少于1.5公里";
       programText.textContent = isFreshman ? "校园阳光健康跑（大一新生）" : "校园阳光健康跑";
       totalKm.textContent = isMale ? "88.00" : "66.00";
